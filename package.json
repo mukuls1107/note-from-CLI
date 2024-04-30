@@ -1,0 +1,9 @@
+{
+  "name": "notes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./index.js",
+  "bin": {
+    "notes": "./index.js"
+  }
+}
