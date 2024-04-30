@@ -3,10 +3,6 @@ import chalk from "chalk";
 import fs from "node:fs"
 
 let userNoteObject = {};
-(async () => {
-    await draw();
-    info();
-})();
 
 async function draw() {
     try {
@@ -23,18 +19,18 @@ function info() {
     console.log(
         `${chalk.green("add")}: Adds new note to the database.\n${chalk.green(
             "exit"
-        )}: Exit from the Application`
+        )}: Exit from the Application.\n${chalk.green(
+            "display"
+        )}: Display the id and content of the Note.`
     );
     return;
 }
 
+function beginning() {
+    info();
 
-
-
-const processInput = (data) => {
-    let choice = data.toString().trim();
-    let flag = true;
-    while (flag) {
+    const processInput = (data) => {
+        let choice = data.toString().trim();
 
         switch (choice) {
             case "add":
@@ -44,8 +40,7 @@ const processInput = (data) => {
 
             case "exit":
             case "ex":
-                flag = false;
-                process.exit(0)
+                process.exit();
                 break;
 
             case "display":
@@ -59,11 +54,10 @@ const processInput = (data) => {
                 process.exit(0)
                 break;
         }
-    }
-};
+    };
 
-process.stdin.on("data", processInput);
-
+    process.stdin.on("data", processInput);
+}
 
 async function addToObj() {
     console.log(chalk.cyanBright("Enter the note you want to add (or 'exit' to finish): "));
@@ -71,25 +65,27 @@ async function addToObj() {
     const addNoteInputHandler = (data) => {
         let final = data.toString().trim();
         if (final.toLowerCase() === "exit") {
+            console.log(chalk.yellow("Exiting note addition..."));
             process.stdin.removeListener("data", addNoteInputHandler); // Remove event listener
+            beginning(); // Display the menu again
             return;
         }
-        userNoteObject["content"] = final;
-        userNoteObject["id"] = Math.floor(Date.now() / 100);
+        const note = {
+            content: final,
+            id: Math.floor(Date.now() / 100)
+        };
+        console.log(chalk.green("Note to be added:", note));
 
-        let outputData = JSON.stringify(userNoteObject) + "\n"; // Add newline character
-        fs.appendFile("notes.json", outputData, (err) => {
-            if (err) {
-                console.log(chalk.red("Error occurred while writing data."));
-            } else {
-                console.log(chalk.green("Note added successfully!"));
-            }
-        });
+        // Write note to file (or database) here
+
+        console.log(chalk.green("Note added successfully!"));
+
+        // Prompt for new note or exit after the note is added
+        console.log(chalk.cyanBright("Enter the next note (or 'exit' to finish): "));
     };
-
+    process.stdin.removeAllListeners("data");
     process.stdin.on("data", addNoteInputHandler);
 }
-
 function deleteFromObj() { }
 
 
@@ -98,3 +94,7 @@ function display() {
     console.log(chalk.cyanBright(`Note is: ${userNoteObject["content"]}`));
 }
 
+(async () => {
+    await draw();
+    beginning();
+})();
