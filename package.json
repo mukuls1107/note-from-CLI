@@ -1,9 +1,19 @@
 {
-  "name": "notes",
+  "name": "notes-cli",
   "version": "1.0.0",
-  "description": "",
-  "main": "./index.js",
-  "bin": {
-    "notes": "./index.js"
-  }
+  "description": "Notes app that runs directly from your Command Line",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mukul1107/note-from-cli.git"
+  },
+  "author": "Mukul Singh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mukul1107/note-from-cli/issues"
+  },
+  "homepage": "https://github.com/mukul1107/note-from-cli#readme"
 }
